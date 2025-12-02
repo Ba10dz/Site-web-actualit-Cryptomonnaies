@@ -143,7 +143,7 @@ if ($res2 && $row2 = $res2->fetch_assoc()) {
 </head>
 <body>
 <header>
-    <a href="index.php">🏠 Accueil</a>
+    <a href="accueil.php">🏠 Accueil</a>
     <h1>Wrapped Bitcoin</h1>
     <div class="balance">💰 Solde: $<?php echo number_format($balance,2); ?></div>
 </header>

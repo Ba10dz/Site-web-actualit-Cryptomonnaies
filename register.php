@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (mysqli_query($conn, $query)) {
         $_SESSION['id'] = mysqli_insert_id($conn);
         $_SESSION['isLoggedIn'] = true;
-        header('Location: index.php');
+        header('Location: login.php');
         exit;
     } else {
         $error = "Erreur lors de l'inscription : " . mysqli_error($conn);
@@ -72,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" name="username" placeholder="Nom d'utilisateur" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Mot de passe" required>
-        <!-- Champ d'upload pour l'image de profil -->
-        <input type="file" name="profil_img" accept="image/*">
+        <input type="file" name="profil_img" placeholder="insérer une image de profil" accept="image/*">
         <button type="submit">S'inscrire</button>
     </form>
 </body>

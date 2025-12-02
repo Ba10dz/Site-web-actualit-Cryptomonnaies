@@ -2,23 +2,18 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Inclusion manuelle de PHPMailer
 require 'vendor/PHPMailer/PHPMailer-6.8.0/src/PHPMailer.php';
 require 'vendor/PHPMailer/PHPMailer-6.8.0/src/Exception.php';
 require 'vendor/PHPMailer/PHPMailer-6.8.0/src/SMTP.php';
 
 function envoyerMailAlerte($destinataire, $symbol, $prixActuel, $type, $seuil) {
-    // 1) Formatage des nombres ‡ 2 dÈcimales
+    // URL de base de ton site
+    $siteUrl = 'http://51.83.68.96/home/TS2/BOURSE/siteamelioration/';
+
+    // üî¢ Formattage √† 2 d√©cimales
     $prixFormat  = number_format($prixActuel, 2);
     $seuilFormat = number_format($seuil, 2);
 
-    // 2) URL de base et chemins vers tes images (dossier "image/")
-    $base      = 'http://51.83.68.96/home/TS2/BOURSE/siteamelioration/';
-    $imgHeader = $base . 'image/email-header.jpg';   // header bandeau
-    $logo      = $base . 'image/logo.png';           // ton logo
-    $gif       = $base . 'image/alert.gif';          // GIF animÈ optionnel
-
-    // 3) Initialisation de PHPMailer
     $mail = new PHPMailer(true);
     $mail->CharSet = 'UTF-8';
 
@@ -28,75 +23,60 @@ function envoyerMailAlerte($destinataire, $symbol, $prixActuel, $type, $seuil) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'sbri.crypto@gmail.com';
-        $mail->Password   = 'bfst kldj derf xiyi';  // mot de passe d'application Gmail
+        $mail->Password   = 'bfst kldj derf xiyi';
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        // ExpÈditeur & destinataire
+        // Exp√©diteur & destinataire
         $mail->setFrom('sbri.crypto@gmail.com', 'Crypto Alert System');
         $mail->addAddress($destinataire);
 
         // Sujet & format HTML
         $mail->isHTML(true);
-        $mail->Subject = "?? Alerte Crypto pour $symbol";
+        $mail->Subject = "üö® Alerte Crypto pour $symbol";
 
-        // 4) Corps HTML du mail
+        // Corps HTML avec les valeurs format√©es
         $mail->Body = "
         <html>
-        <head><meta charset='UTF-8'></head>
-        <body style='margin:0;padding:0;background:#f0f2f5;font-family:Arial,sans-serif;'>
-          <!-- HEADER bandeau -->
-          <div style='text-align:center;'>
-            <img src='{$imgHeader}' alt='Alerte {$symbol}' style='width:100%;max-width:600px;display:block;border:none;'>
-          </div>
-
-          <!-- CONTENU PRINCIPAL -->
-          <div style='max-width:600px;margin:20px auto;background:#ffffff;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);'>
-            <!-- Logo + titre -->
-            <div style='text-align:center;margin-bottom:20px;'>
-              <img src='{$logo}' alt='Logo' width='80' style='vertical-align:middle;'>
-              <h1 style='display:inline-block;color:#0d47a1;font-size:24px;margin-left:10px;'>Alerte sur {$symbol}</h1>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+            .container { max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+            .header { font-size: 22px; color: #333333; margin-bottom: 10px; }
+            .message { font-size: 16px; color: #555555; line-height: 1.5; }
+            .alert { background-color: #fff3cd; padding: 15px; border-left: 5px solid #ffc107; margin: 20px 0; }
+            .alert strong { color: #856404; }
+            .button { display: inline-block; padding: 12px 24px; background-color: #007bff; color: #ffffff !important; text-decoration: none; border-radius: 4px; margin-top: 10px; }
+            .footer { font-size: 12px; color: #888888; margin-top: 30px; text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class='container'>
+            <div class='header'>üìà Alerte sur $symbol</div>
+            <div class='message'>
+              <p>Bonjour,</p>
+              <p>Le prix de <strong>$symbol</strong> est actuellement de <strong>\$$prixFormat USD</strong>.</p>
+              <div class='alert'>
+                ‚ö†Ô∏è Cela a d√©pass√© votre seuil <strong>$type</strong> : <strong>\$$seuilFormat USD</strong>.
+              </div>
+              <p>Pour voir plus de d√©tails ou ajuster votre alerte :</p>
+              <a href='$siteUrl' class='button'>Voir sur le site</a>
             </div>
-
-            <!-- Message -->
-            <p style='color:#333333;font-size:16px;line-height:1.5;margin:0 0 10px;'>
-              Bonjour,<br>
-              Le prix de <strong>{$symbol}</strong> est actuellement de <strong>\${$prixFormat} USD</strong>.
-            </p>
-
-            <!-- BoÓte d'alerte -->
-            <div style='background:#fff3cd;border-left:5px solid #ffc107;padding:15px;border-radius:4px;margin:15px 0;'>
-              ?? Cela a dÈpassÈ votre seuil <strong>{$type}</strong> : <strong>\${$seuilFormat} USD</strong>.
+            <div class='footer'>
+              Crypto Alert System ‚Äì Ne r√©pondez pas √† cet email.
             </div>
-
-            <!-- Bouton CTA -->
-            <div style='text-align:center;margin-top:20px;'>
-              <a href='{$base}' style='display:inline-block;padding:12px 24px;background:#1976d2;color:#ffffff;text-decoration:none;border-radius:4px;font-size:16px;'>
-                Voir sur le site
-              </a>
-            </div>
-          </div>
-
-          <!-- GIF animÈ (optionnel) -->
-          <div style='max-width:600px;margin:0 auto;text-align:center;'>
-            <img src='{$gif}' alt='Animation Alerte' style='width:100%;max-width:600px;display:block;border:none;margin-top:10px;'>
-          </div>
-
-          <!-- FOOTER TEXTE SIMPLE -->
-          <div style='max-width:600px;margin:20px auto;text-align:center;font-size:12px;color:#777777;'>
-            Crypto Alert System ñ Ne rÈpondez pas ‡ cet email.
           </div>
         </body>
         </html>
         ";
 
-        // 5) Envoi
         $mail->send();
+        echo "‚úÖ Mail HTML envoy√© √† $destinataire<br>";
         return true;
-
     } catch (Exception $e) {
-        error_log("Erreur PHPMailer : {$mail->ErrorInfo}");
+        echo "‚ùå Erreur PHPMailer : {$mail->ErrorInfo}<br>";
         return false;
     }
 }
 ?>
+

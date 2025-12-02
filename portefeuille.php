@@ -173,13 +173,13 @@ $cryptosList = getCryptosLite($conn);
 <body>
 <header style="background-color: #342e92; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between;">
     <div class="logo-container" style="display: flex; align-items: center;">
-        <a href="index.php">
+        <a href="accueil.php">
             <img src="logo.png" alt="Logo" style="width: 50px; height: auto; margin-right: 10px;">
         </a>
         <h1 style="color: white; font-size: 1.5rem; margin: 0;">Mon Portefeuille</h1>
     </div>
     <div>
-        <a href="index.php" style="color: white; text-decoration: none; font-weight: bold; font-size: 1rem;">🏠 Accueil</a>
+        <a href="accueil.php" style="color: white; text-decoration: none; font-weight: bold; font-size: 1rem;">🏠 Accueil</a>
     </div>
 </header>
 

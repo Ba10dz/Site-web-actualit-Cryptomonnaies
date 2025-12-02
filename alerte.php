@@ -169,7 +169,7 @@ $selectedPrice = getPrice($conn, $selectedSymbol);
   <div class="header-container">
     <div class="header-top">
       <div class="header-logo">
-        <a href="index.php">
+        <a href="accueil.php">
           <img src="logo.png" alt="Logo">
         </a>
       </div>
